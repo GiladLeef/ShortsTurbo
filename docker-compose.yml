@@ -1,0 +1,33 @@
+x-common-volumes: &common-volumes
+  - ./:/ShortsTurbo
+
+services:
+  webui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "ShortsTurbo-webui"
+    ports:
+      - "8501:8501"
+    command: [ "streamlit", "run", "./webui/main.py","--browser.serverAddress=127.0.0.1","--server.enableCORS=True","--browser.gatherUsageStats=False" ]
+    volumes: *common-volumes
+    restart: always
+    networks:
+      - shortsturbo-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "ShortsTurbo-api"
+    ports:
+      - "8080:8080"
+    command: [ "python3", "main.py" ]
+    volumes: *common-volumes
+    restart: always
+    networks:
+      - shortsturbo-network
+
+networks:
+  shortsturbo-network:
+    driver: bridge
