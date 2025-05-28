@@ -19,7 +19,7 @@ def get_api_key(cfg_key: str):
     if not api_keys:
         raise ValueError(
             f"\n\n##### {cfg_key} is not set #####\n\nPlease set it in the config.toml file: {config.config_file}\n\n"
-            f"{utils.to_json(config.app)}"
+            f"{utils.toJson(config.app)}"
         )
 
     # if only one key is provided, return it
@@ -146,7 +146,7 @@ def search_videos_pixabay(
 
 def save_video(video_url: str, save_dir: str = "") -> str:
     if not save_dir:
-        save_dir = utils.storage_dir("cache_videos")
+        save_dir = utils.storageDir("cache_videos")
 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -248,11 +248,7 @@ def download_videos(
     )
     video_paths = []
 
-    material_directory = config.app.get("material_directory", "").strip()
-    if material_directory == "task":
-        material_directory = utils.task_dir(task_id)
-    elif material_directory and not os.path.isdir(material_directory):
-        material_directory = ""
+    material_directory = utils.taskDir(task_id)
 
     if video_contact_mode.value == VideoConcatMode.random.value:
         random.shuffle(valid_video_items)
@@ -275,6 +271,6 @@ def download_videos(
                     )
                     break
         except Exception as e:
-            logger.error(f"failed to download video: {utils.to_json(item)} => {str(e)}")
+            logger.error(f"failed to download video: {utils.toJson(item)} => {str(e)}")
     logger.success(f"downloaded {len(video_paths)} videos")
     return video_paths

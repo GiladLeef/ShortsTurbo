@@ -1212,7 +1212,7 @@ def siliconflow_tts(
 
                     audio_duration_100ns = int(audio_duration * 10000000)
 
-                    sentences = utils.split_string_by_punctuations(text)
+                    sentences = utils.splitStringByPunctuations(text)
 
                     if sentences:
                         total_chars = sum(len(s) for s in sentences)
@@ -1385,7 +1385,7 @@ def create_subtitle(sub_maker: submaker.SubMaker, text: str, subtitle_file: str)
     sub_items = []
     sub_index = 0
 
-    script_lines = utils.split_string_by_punctuations(text)
+    script_lines = utils.splitStringByPunctuations(text)
 
     def match_line(_sub_line: str, _sub_index: int):
         if len(script_lines) <= _sub_index:

@@ -54,7 +54,7 @@ def get_bgm_file(bgm_type: str = "random", bgm_file: str = ""):
 
     if bgm_type == "random":
         suffix = "*.mp3"
-        song_dir = utils.song_dir()
+        song_dir = utils.songDir()
         files = glob.glob(os.path.join(song_dir, suffix))
         if not files:
             logger.warning("No background music files found")
@@ -293,7 +293,7 @@ def generate_video(
     if params.subtitle_enabled:
         if not params.font_name:
             params.font_name = "STHeitiMedium.ttc"
-        font_path = os.path.join(utils.font_dir(), params.font_name)
+        font_path = os.path.join(utils.fontDir(), params.font_name)
         # Use os.path.normpath for cross-platform path normalization
         font_path = os.path.normpath(font_path)
         logger.info(f"  ⑤ font: {font_path}")
@@ -334,7 +334,7 @@ def preprocess_video(materials: List[MaterialInfo], clip_duration=4):
         if not material.url:
             continue
 
-        ext = utils.parse_extension(material.url)
+        ext = utils.parseExtension(material.url)
         
         # Get dimensions using FFmpeg
         try:

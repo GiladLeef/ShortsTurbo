@@ -18,7 +18,7 @@ model = None
 def create(audio_file, subtitle_file: str = ""):
     global model
     if not model:
-        model_path = f"{utils.root_dir()}/models/whisper-{model_size}"
+        model_path = f"{utils.rootDir()}/models/whisper-{model_size}"
         model_bin_file = f"{model_path}/model.bin"
         if not os.path.isdir(model_path) or not os.path.isfile(model_bin_file):
             model_path = model_size
@@ -91,7 +91,7 @@ def create(audio_file, subtitle_file: str = ""):
                 # If it contains punctuation, then break the sentence.
                 seg_text += word.word
 
-                if utils.str_contains_punctuation(word.word):
+                if utils.strContainsPunctuation(word.word):
                     # remove last char
                     seg_text = seg_text[:-1]
                     if not seg_text:
@@ -124,7 +124,7 @@ def create(audio_file, subtitle_file: str = ""):
         text = subtitle.get("msg")
         if text:
             lines.append(
-                utils.text_to_srt(
+                utils.textToSrt(
                     idx, text, subtitle.get("start_time"), subtitle.get("end_time")
                 )
             )
@@ -186,7 +186,7 @@ def similarity(a, b):
 
 def correct(subtitle_file, video_script):
     subtitle_items = file_to_subtitles(subtitle_file)
-    script_lines = utils.split_string_by_punctuations(video_script)
+    script_lines = utils.splitStringByPunctuations(video_script)
 
     corrected = False
     new_subtitle_items = []

@@ -67,20 +67,20 @@ def generateTerms(taskId, params, videoScript):
 
 
 def saveScriptData(taskId, videoScript, videoTerms, params):
-    scriptFile = path.join(utils.task_dir(taskId), "script.json")
+    scriptFile = path.join(utils.taskDir(taskId), "script.json")
     scriptData = {
-        "script": videoScript,
-        "search_terms": videoTerms,
-        "params": params,
+        "video_script": videoScript,
+        "video_terms": params.videoTerms,
+        "video_subject": params.videoSubject,
     }
 
     with open(scriptFile, "w", encoding="utf-8") as f:
-        f.write(utils.to_json(scriptData))
+        f.write(utils.toJson(scriptData))
 
 
 def generateAudio(taskId, params, videoScript):
     logger.info("Generating audio")
-    audioFile = path.join(utils.task_dir(taskId), "audio.mp3")
+    audioFile = path.join(utils.taskDir(taskId), "audio.mp3")
     subMaker = voice.tts(
         text=videoScript,
         voice_name=voice.parse_voice_name(params.voiceName),
@@ -100,7 +100,7 @@ def generateSubtitle(taskId, params, videoScript, subMaker, audioFile):
     if not params.subtitleEnabled:
         return ""
 
-    subtitlePath = path.join(utils.task_dir(taskId), "subtitle.srt")
+    subtitlePath = path.join(utils.taskDir(taskId), "subtitle.srt")
     subtitleProvider = config.app.get("subtitle_provider", "edge").strip().lower()
     logger.info(f"Generating subtitle, provider: {subtitleProvider}")
 
@@ -167,7 +167,7 @@ def generateFinalVideos(taskId, params, downloadedVideos, audioFile, subtitlePat
     for i in range(params.videoCount):
         index = i + 1
         combinedVideoPath = path.join(
-            utils.task_dir(taskId), f"combined-{index}.mp4"
+            utils.taskDir(taskId), f"combined-{index}.mp4"
         )
         logger.info(f"Combining video: {index} => {combinedVideoPath}")
         video.combine_videos(
@@ -184,7 +184,7 @@ def generateFinalVideos(taskId, params, downloadedVideos, audioFile, subtitlePat
         progress += 50 / params.videoCount / 2
         sm.state.update_task(taskId, progress=progress)
 
-        finalVideoPath = path.join(utils.task_dir(taskId), f"final-{index}.mp4")
+        finalVideoPath = path.join(utils.taskDir(taskId), f"final-{index}.mp4")
 
         logger.info(f"Generating video: {index} => {finalVideoPath}")
         video.generate_video(

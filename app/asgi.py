@@ -18,14 +18,14 @@ from app.utils import utils
 def exceptionHandler(request: Request, e: HttpException):
     return JSONResponse(
         status_code=e.statusCode,
-        content=utils.get_response(e.statusCode, e.data, e.message),
+        content=utils.getResponse(e.statusCode, e.data, e.message),
     )
 
 
 def validationExceptionHandler(request: Request, e: RequestValidationError):
     return JSONResponse(
         status_code=400,
-        content=utils.get_response(
+        content=utils.getResponse(
             status=400, data=e.errors(), message="field required"
         ),
     )
@@ -63,12 +63,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-taskDir = utils.task_dir()
+taskDir = utils.taskDir()
 app.mount(
     "/tasks", StaticFiles(directory=taskDir, html=True, follow_symlink=True), name=""
 )
 
-publicDir = utils.public_dir()
+publicDir = utils.publicDir()
 app.mount("/", StaticFiles(directory=publicDir, html=True), name="")
 
 

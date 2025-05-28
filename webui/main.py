@@ -138,6 +138,7 @@ def get_all_fonts():
     return fonts
 
 def get_all_songs():
+    song_dir = os.path.join(root_dir, "resource", "songs")
     songs = []
     for root, dirs, files in os.walk(song_dir):
         for file in files:
@@ -700,7 +701,7 @@ if start_button:
 
             if params.video_source == "local" and uploaded_files:
                 for file in uploaded_files:
-                    file_path = os.path.join(utils.storage_dir("local_videos", create=True), f"{file.file_id}_{file.name}")
+                    file_path = os.path.join(utils.storageDir("local_videos", create=True), f"{file.file_id}_{file.name}")
                     with open(file_path, "wb") as f:
                         f.write(file.getbuffer())
                         m = MaterialInfo()
@@ -791,7 +792,7 @@ if start_button:
             st.stop()
 
         if uploaded_files:
-            local_videos_dir = utils.storage_dir("local_videos", create=True)
+            local_videos_dir = utils.storageDir("local_videos", create=True)
             for file in uploaded_files:
                 file_path = os.path.join(local_videos_dir, f"{file.file_id}_{file.name}")
                 with open(file_path, "wb") as f:
@@ -809,7 +810,7 @@ if start_button:
 
         st.toast("Generating Video")
         logger.info("Start Generating Video")
-        logger.info(utils.to_json(params))
+        logger.info(utils.toJson(params))
         scroll_to_bottom()
 
         result = tm.start(task_id=task_id, params=params)
